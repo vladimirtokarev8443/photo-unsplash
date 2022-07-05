@@ -2,10 +2,8 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/tabs_nav_graph"
-    app:startDestination="@id/photoListFragment">
-
-    <fragment
-        android:id="@+id/photoListFragment"
-        android:name="com.example.inspiration.presentation.PhotoListFragment"
-        android:label="PhotoListFragment" />
+    app:startDestination="@id/photo_nav_graph">
+    <include app:graph="@navigation/photo_nav_graph" />
+    <include app:graph="@navigation/collection_nav_graph" />
+    <include app:graph="@navigation/user_nav_graph" />
 </navigation>

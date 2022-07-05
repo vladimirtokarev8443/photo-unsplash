@@ -33,8 +33,4 @@ class MainViewModel @Inject constructor(
         return userVerificationRepository.getUserVerification()
     }
 
-     suspend fun saveUserVerification(userVerification: UserVerification){
-
-        userVerificationRepository.saveUserVerification(userVerification = userVerification)
-    }
 }

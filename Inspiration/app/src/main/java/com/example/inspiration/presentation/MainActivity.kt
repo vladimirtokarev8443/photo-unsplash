@@ -30,35 +30,40 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val navHost = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+
         navController = navHost.navController
 
         navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
 
-        setStartDestination(R.id.tabsFragment)
-
-
+        observeViewModel()
 
     }
 
     private fun observeViewModel(){
         viewModel.verification
             .onEach {
-                it?.let {
-                   val a = when(it.verificationValue){
-                        Verification.FIRST_VIZIT -> {R.navigation.tabs_nav_graph}
-                        Verification.NOT_VERIFIED -> {R.id.authFragment}
-                        else -> {R.navigation.tabs_nav_graph}
-                    }
-                    setStartDestination(a)
+                it?.let { userVerofication ->
+
+                   val destIdRes = getDestinationId(verification = userVerofication.verificationValue)
+
+                    setStartDestination(destIdRes = destIdRes)
                 }
             }
             .launchIn(lifecycleScope)
     }
 
+    private fun getDestinationId(verification: Verification): Int {
+        return when(verification){
+            Verification.FIRST_VIZIT -> {R.id.onboardingFragment}
+            Verification.NOT_VERIFIED -> {R.id.authFragment}
+            else -> {R.id.tabsFragment}
+        }
+    }
+
     private fun setStartDestination(@IdRes destIdRes: Int) {
 
-
         navGraph.setStartDestination(destIdRes)
+
         navController.graph = navGraph
     }
 

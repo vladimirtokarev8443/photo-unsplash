@@ -7,11 +7,19 @@
     <fragment
         android:id="@+id/onboardingFragment"
         android:name="com.example.inspiration.presentation.OnboardingFragment"
-        android:label="OnboardingFragment" />
+        android:label="OnboardingFragment" >
+        <action
+            android:id="@+id/action_onboardingFragment_to_authFragment"
+            app:destination="@id/authFragment" />
+    </fragment>
     <fragment
         android:id="@+id/authFragment"
         android:name="com.example.inspiration.presentation.AuthFragment"
-        android:label="AuthFragment" />
+        android:label="AuthFragment" >
+        <action
+            android:id="@+id/action_authFragment_to_tabsFragment"
+            app:destination="@id/tabsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/tabsFragment"
         android:name="com.example.inspiration.presentation.TabsFragment"
