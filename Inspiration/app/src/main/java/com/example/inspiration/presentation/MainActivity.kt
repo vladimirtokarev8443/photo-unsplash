@@ -11,6 +11,7 @@ import androidx.navigation.NavGraph
 import androidx.navigation.fragment.NavHostFragment
 import com.example.inspiration.R
 import com.example.inspiration.data.enum.Verification
+import com.example.inspiration.data.network.AccessToken
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -40,7 +41,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun observeViewModel(){
-        viewModel.verification
+
+        viewModel.verificationStateFlow
             .onEach {
                 it?.let { userVerofication ->
 
@@ -48,6 +50,12 @@ class MainActivity : AppCompatActivity() {
 
                     setStartDestination(destIdRes = destIdRes)
                 }
+            }
+            .launchIn(lifecycleScope)
+
+        viewModel.accessTokenStateFlow
+            .onEach {
+                AccessToken.accessToken = it
             }
             .launchIn(lifecycleScope)
     }
