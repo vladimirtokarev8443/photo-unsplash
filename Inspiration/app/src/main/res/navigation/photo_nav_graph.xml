@@ -6,6 +6,6 @@
 
     <fragment
         android:id="@+id/photoListFragment"
-        android:name="com.example.inspiration.presentation.PhotoListFragment"
-        android:label="PhotoListFragment" />
+        android:name="com.example.inspiration.presentation.tabs.PhotoListFragment"
+        android:label="@string/photo" />
 </navigation>

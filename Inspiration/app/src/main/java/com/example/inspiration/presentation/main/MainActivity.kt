@@ -1,4 +1,4 @@
-package com.example.inspiration.presentation
+package com.example.inspiration.presentation.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,10 +11,11 @@ import androidx.navigation.NavGraph
 import androidx.navigation.fragment.NavHostFragment
 import com.example.inspiration.R
 import com.example.inspiration.data.enum.Verification
-import com.example.inspiration.data.network.AccessToken
+import com.example.inspiration.data.network.auth.AccessToken
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -44,23 +45,20 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.verificationStateFlow
             .onEach {
-                it?.let { userVerofication ->
 
-                   val destIdRes = getDestinationId(verification = userVerofication.verificationValue)
+                it?.let { userVerification ->
+
+                   val destIdRes = getDestinationId(verification = userVerification.verificationValue)
 
                     setStartDestination(destIdRes = destIdRes)
                 }
             }
             .launchIn(lifecycleScope)
 
-        viewModel.accessTokenStateFlow
-            .onEach {
-                AccessToken.accessToken = it
-            }
-            .launchIn(lifecycleScope)
     }
 
     private fun getDestinationId(verification: Verification): Int {
+        Timber.d(verification.name)
         return when(verification){
             Verification.FIRST_VIZIT -> {R.id.onboardingFragment}
             Verification.NOT_VERIFIED -> {R.id.authFragment}

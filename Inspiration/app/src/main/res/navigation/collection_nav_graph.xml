@@ -6,6 +6,6 @@
 
     <fragment
         android:id="@+id/collectionListFragment"
-        android:name="com.example.inspiration.presentation.CollectionListFragment"
-        android:label="CollectionListFragment" />
+        android:name="com.example.inspiration.presentation.tabs.CollectionListFragment"
+        android:label="@string/collections" />
 </navigation>

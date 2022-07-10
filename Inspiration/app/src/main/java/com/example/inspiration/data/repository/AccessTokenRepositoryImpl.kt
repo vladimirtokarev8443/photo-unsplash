@@ -2,8 +2,9 @@ package com.example.inspiration.data.repository
 
 import com.example.inspiration.data.storage.datastore.AccessTokenRepository
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class AccessTokenRepositoryImpl(
+class AccessTokenRepositoryImpl @Inject constructor(
     private val accessTokenRepository: AccessTokenRepository
 ) {
 

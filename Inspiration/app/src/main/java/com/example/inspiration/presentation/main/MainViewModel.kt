@@ -1,13 +1,15 @@
-package com.example.inspiration.presentation
+package com.example.inspiration.presentation.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.inspiration.data.models.UserVerification
+import com.example.inspiration.data.network.auth.AccessToken
 import com.example.inspiration.data.repository.AccessTokenRepositoryImpl
 import com.example.inspiration.data.repository.UserVerificationRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,21 +21,20 @@ class MainViewModel @Inject constructor(
     private val verificationMutStateFlow = MutableStateFlow<UserVerification?>(null)
     val verificationStateFlow: StateFlow<UserVerification?> = verificationMutStateFlow
 
-    private val accessTokenMutStateFlow = MutableStateFlow<String?>(null)
-    val accessTokenStateFlow: StateFlow<String?> = accessTokenMutStateFlow
-
     init {
         viewModelScope.launch {
 
             getUserVerification()
                 .onEach {
-                    verificationMutStateFlow.update { it }
+                    verificationMutStateFlow.value = it
                 }
                 .launchIn(viewModelScope)
 
             getAccessToken()
                 .onEach {
-                    accessTokenMutStateFlow.update { it }
+                    Timber.d(it)
+                    AccessToken.accessToken = it
+
                 }
                 .launchIn(viewModelScope)
         }
