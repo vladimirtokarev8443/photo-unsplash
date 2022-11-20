@@ -3,7 +3,7 @@ package com.example.inspiration.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.inspiration.data.models.OnbordingScreenInfo
+import com.example.inspiration.models.OnbordingScreenInfo
 import com.example.inspiration.databinding.ItemOnboardingBinding
 
 class ViewPagerAdapter(

@@ -13,7 +13,6 @@ import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.inspiration.R
 import com.example.inspiration.databinding.FragmentAuthBinding
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -50,7 +49,7 @@ class AuthFragment: Fragment(R.layout.fragment_auth) {
         viewModel.openAuthPageLiveData.observe(viewLifecycleOwner, ::openAuthPage)
         viewModel.toastLiveData.observe(viewLifecycleOwner, ::snackbar)
         viewModel.authSuccessLiveData.observe(viewLifecycleOwner) {
-            viewModel.saveUserVerification()
+            //viewModel.saveVerificationStatus()
             findNavController().navigate(R.id.action_authFragment_to_tabsFragment)
         }
     }

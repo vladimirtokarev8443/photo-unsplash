@@ -2,16 +2,20 @@ package com.example.inspiration.presentation.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.annotation.IdRes
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph
 import androidx.navigation.fragment.NavHostFragment
+import com.example.domain.enum.VerificationStatus
 import com.example.inspiration.R
-import com.example.inspiration.data.enum.Verification
-import com.example.inspiration.data.network.auth.AccessToken
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -39,6 +43,15 @@ class MainActivity : AppCompatActivity() {
 
         observeViewModel()
 
+        hideSystemBottomNav(findViewById<ConstraintLayout>(R.id.fragmentContainerView))
+
+    }
+
+    private fun hideSystemBottomNav(view: View){
+        WindowCompat.getInsetsController(window, view).apply {
+            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            hide(WindowInsetsCompat.Type.navigationBars())
+        }
     }
 
     private fun observeViewModel(){
@@ -46,9 +59,9 @@ class MainActivity : AppCompatActivity() {
         viewModel.verificationStateFlow
             .onEach {
 
-                it?.let { userVerification ->
+                it?.let { verificationStatus ->
 
-                   val destIdRes = getDestinationId(verification = userVerification.verificationValue)
+                   val destIdRes = getDestinationId(status = VerificationStatus.valueOf(verificationStatus))
 
                     setStartDestination(destIdRes = destIdRes)
                 }
@@ -57,11 +70,11 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun getDestinationId(verification: Verification): Int {
-        Timber.d(verification.name)
-        return when(verification){
-            Verification.FIRST_VIZIT -> {R.id.onboardingFragment}
-            Verification.NOT_VERIFIED -> {R.id.authFragment}
+    private fun getDestinationId(status: VerificationStatus): Int {
+        Timber.d(status.name)
+        return when(status){
+            VerificationStatus.FIRST_VIZIT -> {R.id.onboardingFragment}
+            VerificationStatus.NOT_VERIFIED -> {R.id.authFragment}
             else -> {R.id.tabsFragment}
         }
     }

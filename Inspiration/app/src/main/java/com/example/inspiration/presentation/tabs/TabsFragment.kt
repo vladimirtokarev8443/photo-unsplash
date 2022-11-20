@@ -29,7 +29,6 @@ class TabsFragment: Fragment(R.layout.fragment_tabs) {
         )
 
         binding.bottomNavigationView.setupWithNavController(navController)
-        binding.toolbar.setupWithNavController(navController, appBarConfiguration)
 
     }
 

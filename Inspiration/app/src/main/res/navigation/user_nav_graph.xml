@@ -6,6 +6,6 @@
 
     <fragment
         android:id="@+id/userProfileFragment"
-        android:name="com.example.inspiration.presentation.tabs.UserProfileFragment"
-        android:label="@string/profile" />
+        android:name="com.example.inspiration.presentation.tabs.ProfileFragment"
+        android:label="@string/toolbar_title_profile" />
 </navigation>

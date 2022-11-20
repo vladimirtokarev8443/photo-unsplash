@@ -2,8 +2,6 @@ package com.example.inspiration.presentation.onboarding
 
 import android.os.Bundle
 import android.view.View
-import android.view.animation.AnimationUtils
-import androidx.core.view.isVisible
 
 
 import androidx.fragment.app.Fragment
@@ -13,9 +11,8 @@ import androidx.viewpager2.widget.ViewPager2
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.inspiration.R
 import com.example.inspiration.adapters.ViewPagerAdapter
-import com.example.inspiration.data.models.OnbordingScreenInfo
 import com.example.inspiration.databinding.FragmentOnboardingBinding
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.example.inspiration.utils.DepthPageTransformer
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -1,40 +1,38 @@
 package com.example.inspiration.presentation.auth
 
 import android.content.Intent
+import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.data.repository.AuthConfig
+import com.example.domain.enum.VerificationStatus
+import com.example.domain.usecase.verification.SaveAccessTokenUseCase
+import com.example.domain.usecase.verification.SaveVerificationStatusUseCase
 import com.example.inspiration.R
-import com.example.inspiration.SingleLiveEvent
-import com.example.inspiration.data.enum.Verification
-import com.example.inspiration.data.models.UserVerification
-import com.example.inspiration.data.repository.AccessTokenRepositoryImpl
-import com.example.inspiration.data.repository.AuthRepository
-import com.example.inspiration.data.repository.UserVerificationRepositoryImpl
+import com.example.inspiration.utils.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import net.openid.appauth.AuthorizationException
-import net.openid.appauth.AuthorizationResponse
-import net.openid.appauth.AuthorizationService
-import net.openid.appauth.TokenRequest
+import net.openid.appauth.*
 import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    private val authRepository: AuthRepository,
     private val authService: AuthorizationService,
-    private val accessTokenRepositoryImpl: AccessTokenRepositoryImpl,
-    private val userVerificationRepositoryImpl: UserVerificationRepositoryImpl
+    private val saveVerificationStatusUseCase: SaveVerificationStatusUseCase,
+    private val saveAccessTokenUseCase: SaveAccessTokenUseCase
 ): ViewModel() {
 
-    private val openAuthPageLiveEvent = SingleLiveEvent<Intent>()
+    private val openAuthPageLiveEvent =
+        SingleLiveEvent<Intent>()
     val openAuthPageLiveData: LiveData<Intent>
         get() = openAuthPageLiveEvent
 
-    private val toastLiveEvent = SingleLiveEvent<Int>()
+    private val toastLiveEvent =
+        SingleLiveEvent<Int>()
     val toastLiveData: LiveData<Int>
         get() = toastLiveEvent
 
@@ -42,7 +40,8 @@ class AuthViewModel @Inject constructor(
     val loadingLiveData: LiveData<Boolean>
         get() = loadingMutableLiveData
 
-    private val authSuccessLiveEvent = SingleLiveEvent<Unit>()
+    private val authSuccessLiveEvent =
+        SingleLiveEvent<Unit>()
     val authSuccessLiveData: LiveData<Unit>
         get() = authSuccessLiveEvent
 
@@ -69,11 +68,13 @@ class AuthViewModel @Inject constructor(
     private fun onAuthCodeReceived(tokenRequest: TokenRequest) {
         loadingMutableLiveData.postValue(true)
 
-        authRepository.performTokenRequest(
+        performTokenRequest(
             authService = authService,
             tokenRequest = tokenRequest,
             onComplete = { accessToken ->
+
                 saveAccessToken(accessToken = accessToken)
+                saveVerificationStatus()
                 loadingMutableLiveData.postValue(false)
                 authSuccessLiveEvent.postValue(Unit)
             },
@@ -90,7 +91,7 @@ class AuthViewModel @Inject constructor(
             .build()
 
         val openAuthPageIntent = authService.getAuthorizationRequestIntent(
-            authRepository.getAuthRequest(),
+            getAuthRequest(),
             customTabsIntent
         )
 
@@ -99,20 +100,60 @@ class AuthViewModel @Inject constructor(
 
     private fun saveAccessToken(accessToken: String){
         viewModelScope.launch {
-            accessTokenRepositoryImpl.saveAccessToken(accessToken = accessToken)
+            saveAccessTokenUseCase.execute(accessToken)
         }
     }
 
-    fun saveUserVerification(){
+    fun saveVerificationStatus(){
         viewModelScope.launch {
-            userVerificationRepositoryImpl.saveUserVerification(
-                UserVerification(verificationValue = Verification.VERIFIED)
-            )
+            saveVerificationStatusUseCase.execute(VerificationStatus.VERIFIED.name)
         }
     }
 
     override fun onCleared() {
         super.onCleared()
         authService.dispose()
+    }
+
+    private fun getAuthRequest(): AuthorizationRequest {
+        val serviceConfiguration = AuthorizationServiceConfiguration(
+            Uri.parse(AuthConfig.AUTH_URI),
+            Uri.parse(AuthConfig.TOKEN_URI)
+        )
+
+        val redirectUri = Uri.parse(AuthConfig.CALLBACK_URL)
+
+        return AuthorizationRequest.Builder(
+            serviceConfiguration,
+            AuthConfig.CLIENT_ID,
+            AuthConfig.RESPONSE_TYPE,
+            redirectUri
+        )
+            .setScope(AuthConfig.SCOPE_PUBLIC)
+            .setCodeVerifier(null)
+            .build()
+    }
+
+    fun performTokenRequest(
+        authService: AuthorizationService,
+        tokenRequest: TokenRequest,
+        onComplete: (String) -> Unit,
+        onError: () -> Unit
+    ) {
+        authService.performTokenRequest(tokenRequest, getClientAuthentication()) { response, ex ->
+            when {
+                response != null -> {
+                    val accessToken = response.accessToken.orEmpty()
+                    //AccessToken.accessToken = accessToken
+
+                    onComplete(accessToken)
+                }
+                else -> onError()
+            }
+        }
+    }
+
+    private fun getClientAuthentication(): ClientAuthentication {
+        return ClientSecretPost(AuthConfig.CLIENT_SECRET)
     }
 }

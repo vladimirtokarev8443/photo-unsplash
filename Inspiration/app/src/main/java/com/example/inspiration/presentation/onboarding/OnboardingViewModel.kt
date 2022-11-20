@@ -2,18 +2,17 @@ package com.example.inspiration.presentation.onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.domain.enum.VerificationStatus
+import com.example.domain.usecase.verification.SaveVerificationStatusUseCase
 import com.example.inspiration.R
-import com.example.inspiration.data.enum.Verification
-import com.example.inspiration.data.models.OnbordingScreenInfo
-import com.example.inspiration.data.models.UserVerification
-import com.example.inspiration.data.repository.UserVerificationRepositoryImpl
+import com.example.inspiration.models.OnbordingScreenInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class OnboardingViewModel @Inject constructor(
-    private val userVerificationRepositoryImpl: UserVerificationRepositoryImpl
+    private val saveVerificationStatusUseCase: SaveVerificationStatusUseCase
 ): ViewModel() {
 
     private val onboardingScreenInfoList = listOf(
@@ -37,9 +36,7 @@ class OnboardingViewModel @Inject constructor(
 
     fun saveUserVerification(){
         viewModelScope.launch {
-            userVerificationRepositoryImpl.saveUserVerification(
-                UserVerification(Verification.NOT_VERIFIED)
-            )
+            saveVerificationStatusUseCase.execute(VerificationStatus.NOT_VERIFIED.name)
         }
     }
 }

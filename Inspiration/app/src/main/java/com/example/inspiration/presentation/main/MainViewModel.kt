@@ -2,51 +2,51 @@ package com.example.inspiration.presentation.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.inspiration.data.models.UserVerification
-import com.example.inspiration.data.network.auth.AccessToken
-import com.example.inspiration.data.repository.AccessTokenRepositoryImpl
-import com.example.inspiration.data.repository.UserVerificationRepositoryImpl
+import com.example.domain.enum.VerificationStatus
+import com.example.domain.usecase.verification.GetAccessTokenUseCase
+import com.example.domain.usecase.verification.GetVerificationStatusUseCase
+import com.example.data.repository.AccessToken
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val userVerificationRepositoryImpl: UserVerificationRepositoryImpl,
-    private val accessTokenRepositoryImpl: AccessTokenRepositoryImpl
-): ViewModel() {
+    private val getVerificationStatusUseCase: GetVerificationStatusUseCase,
+    private val getAccessTokenUseCase: GetAccessTokenUseCase
+) : ViewModel() {
 
-    private val verificationMutStateFlow = MutableStateFlow<UserVerification?>(null)
-    val verificationStateFlow: StateFlow<UserVerification?> = verificationMutStateFlow
+    private val job = SupervisorJob()
+    private val verificationMutStateFlow = MutableStateFlow<String?>(null)
+    val verificationStateFlow: StateFlow<String?> = verificationMutStateFlow
 
     init {
-        viewModelScope.launch {
-
-            getUserVerification()
-                .onEach {
-                    verificationMutStateFlow.value = it
-                }
-                .launchIn(viewModelScope)
-
+        viewModelScope.launch(job) {
+            getVerificationStatus()
             getAccessToken()
-                .onEach {
-                    Timber.d(it)
-                    AccessToken.accessToken = it
-
-                }
-                .launchIn(viewModelScope)
         }
-
     }
 
-    private suspend fun getUserVerification(): Flow<UserVerification>{
-        return userVerificationRepositoryImpl.getUserVerification()
+    private suspend fun getVerificationStatus() = withContext(Dispatchers.IO){
+        getVerificationStatusUseCase.execute()
+            .onEach {
+                verificationMutStateFlow.value = it ?: VerificationStatus.FIRST_VIZIT.name
+            }
+            .launchIn(viewModelScope)
     }
 
-    private suspend fun getAccessToken(): Flow<String?>{
-        return accessTokenRepositoryImpl.getAccessToken()
+    private suspend fun getAccessToken() = withContext(Dispatchers.IO){
+        getAccessTokenUseCase.execute()
+            .onEach {
+                AccessToken.token = it
+            }
+            .launchIn(viewModelScope)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        //job.cancel()
     }
 
 }

@@ -1,18 +1,24 @@
 <resources>
     <string name="app_name">Inspiration</string>
 
-    <string name="menu_item_photo">Photo</string>
-    <string name="menu_item_collection">Collection</string>
-    <string name="menu_item_user">Profile</string>
+    <string name="toolbar_title_photo">Фотографии</string>
+    <string name="toolbar_title_collections">Коллекции</string>
+    <string name="toolbar_title_profile">Профиль</string>
+
+    <string name="menu_item_photo">Фотографии</string>
+    <string name="menu_item_collection">Коллекции</string>
+    <string name="menu_item_user">Профиль</string>
+
+    <string name="menu_toolbar_search">Search</string>
 
     <string name="onboarding_text_first">Создавайте снимки, публикуйте, собирайте аудиторию, получайте фидбек!</string>
     <string name="onboarding_text_second">Делитесь с друзьями, собирайте коллекции</string>
     <string name="onboarding_text_third">Загружайте любимые снимки и отслеживайте статистику</string>
+
     <string name="close">Close</string>
     <string name="unsplash">Unsplash</string>
     <string name="auth_canceled">Авторизация не выполнена</string>
-    <string name="photo">Фото</string>
-    <string name="collections">Коллекции</string>
-    <string name="profile">Профиль</string>
+
+
 
 </resources>

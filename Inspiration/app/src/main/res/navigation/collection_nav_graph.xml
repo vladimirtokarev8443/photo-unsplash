@@ -7,5 +7,5 @@
     <fragment
         android:id="@+id/collectionListFragment"
         android:name="com.example.inspiration.presentation.tabs.CollectionListFragment"
-        android:label="@string/collections" />
+        android:label="@string/toolbar_title_collections" />
 </navigation>

@@ -28,4 +28,5 @@
         <item name="android:background">#27292D</item>
         <item name="colorPrimary">?attr/colorSecondary</item>
     </style>
+
 </resources>
