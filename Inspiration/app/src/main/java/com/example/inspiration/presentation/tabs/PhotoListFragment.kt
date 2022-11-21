@@ -1,64 +1,38 @@
 package com.example.inspiration.presentation.tabs
 
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.setupWithNavController
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.example.domain.models.Photo
 import com.example.inspiration.R
 import com.example.inspiration.adapters.PhotoAdapter
 import com.example.inspiration.databinding.FragmentPhotoListBinding
-import com.example.inspiration.utils.BaseFragment
-import com.example.inspiration.utils.ItemPhotoOffset
-import com.example.inspiration.utils.setIconSearchView
+import com.example.inspiration.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
 
 @AndroidEntryPoint
 class PhotoListFragment: BaseFragment<FragmentPhotoListBinding>(FragmentPhotoListBinding::inflate) {
 
     private val viewModel: PhotoListViewModel by viewModels()
     private var photoAdapter: PhotoAdapter? = null
+    private var job: Job? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireView().setIconSearchView()
+
         initPhotoList()
-        //observeViewModel()
 
-        val search = binding.photoToolbar.menu.findItem(R.id.actionSearch)
-        (search.actionView as SearchView).setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let {
-                    viewModel.searchPhoto(query)
-                        .onStart {
-                            photoAdapter?.submitData(PagingData.empty())
-                        }
-                        .onEach {
-                            photoAdapter?.submitData(it)
-                        }
-                    .launchIn(viewLifecycleOwner.lifecycleScope) }
+        observeViewModel()
 
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-
-                return true
-            }
-        })
-
-
-
-
+        searchExpandedListener()
+        binding.filterFab.setOnClickListener {  }
         }
 
     private fun initPhotoList(){
@@ -74,15 +48,36 @@ class PhotoListFragment: BaseFragment<FragmentPhotoListBinding>(FragmentPhotoLis
     }
 
     private fun observeViewModel(){
-        viewModel.photoList
-            .onEach {
-                photoAdapter?.submitData(it)
-            }
-            .launchIn(viewLifecycleOwner.lifecycleScope)
+        viewModel.getPhotos().onEach(::setPhotosAdapter).launchIn(viewLifecycleOwner.lifecycleScope)
+    }
+
+    private suspend fun setPhotosAdapter(photos: PagingData<Photo>){
+        photoAdapter?.submitData(photos)
+    }
+
+    private fun searchExpandedListener(){
+        binding.photoToolbar.menu.findItem(R.id.actionSearch)
+            .expandedSearch(
+                isExpand = {searchTextListener()},
+                isCollapse = {setSearchText("")}
+            )
+    }
+
+    private fun searchTextListener(){
+        if (job == null){
+            job = (binding.photoToolbar.menu.findItem(R.id.actionSearch).actionView as SearchView)
+                    .changeText().onEach(::setSearchText).launchIn(viewLifecycleOwner.lifecycleScope)
+        }
+
+    }
+
+    private fun setSearchText(text: String){
+        viewModel.setSeachText(text)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         photoAdapter = null
+        job = null
     }
 }

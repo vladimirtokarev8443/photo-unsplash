@@ -1,16 +1,18 @@
 package com.example.inspiration.presentation.tabs
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.data.storage.NETWORK_PAGE_SIZE
-import com.example.data.storage.PhotoPagingSource
+import com.example.data.paging.NETWORK_PAGE_SIZE
+import com.example.data.paging.PhotoPagingSource
 import com.example.domain.models.Photo
 import com.example.domain.usecase.photo.GetPhotosUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
@@ -18,35 +20,30 @@ import javax.inject.Inject
 class PhotoListViewModel @Inject constructor(
     private val getPhotosUseCase: GetPhotosUseCase
 ): ViewModel() {
+    private val searchFlow = MutableStateFlow<String>("")
 
-    val photoList: Flow<PagingData<Photo>> = getPhotos()
-    val photoSearch: Flow<PagingData<Photo>> = flowOf(PagingData.empty())
+    fun setSeachText(search: String){
+        searchFlow.value = search
+    }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun getPhotos(): Flow<PagingData<Photo>> {
+        return searchFlow
+            .flatMapLatest {
+                getPager(it)
+            }.cachedIn(viewModelScope)
 
-    private fun getPhotos(): Flow<PagingData<Photo>>{
+    }
+
+    private fun getPager(text: String): Flow<PagingData<Photo>>{
         return Pager(
             PagingConfig(
                 pageSize = NETWORK_PAGE_SIZE,
                 enablePlaceholders = false
             )
         ) {
-            PhotoPagingSource(getPhotosUseCase)
-        }.flow.cachedIn(viewModelScope)
-    }
-
-    fun searchPhoto(query: String): Flow<PagingData<Photo>>{
-
-
-        return Pager(
-                PagingConfig(
-                    pageSize = NETWORK_PAGE_SIZE,
-                    enablePlaceholders = false
-                )
-            ) {
-                PhotoPagingSource(getPhotosUseCase, query)
-            }.flow
-
-
+            PhotoPagingSource(getPhotosUseCase, text)
+        }.flow
     }
 
 }

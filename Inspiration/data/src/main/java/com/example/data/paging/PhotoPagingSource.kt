@@ -1,4 +1,4 @@
-package com.example.data.storage
+package com.example.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
@@ -15,7 +15,6 @@ class PhotoPagingSource (
     private val getPhotosUseCase: GetPhotosUseCase,
     private val query: String = ""
 ): PagingSource<Int, Photo>() {
-    var q = ""
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Photo> {
         try {
 
