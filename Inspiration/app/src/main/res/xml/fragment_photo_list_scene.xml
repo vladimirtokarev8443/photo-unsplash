@@ -5,21 +5,12 @@
     <Transition
         motion:constraintSetEnd="@+id/end"
         motion:constraintSetStart="@id/start"
-        motion:duration="250"
-        motion:motionInterpolator="linear">
+        motion:duration="250">
         <KeyFrameSet>
-            <KeyTrigger
-                motion:framePosition="10"
-                motion:motionTarget="@id/filterFab"
-                motion:onPositiveCross="hide"/>
-            <KeyTrigger
-                motion:framePosition="20"
-                motion:motionTarget="@id/filterFab"
-                motion:onNegativeCross="show"/>
         </KeyFrameSet>
         <OnSwipe
             motion:dragDirection="dragUp"
-            motion:touchAnchorId="@id/photoToolbar"
+            motion:touchAnchorId="@id/photoItemList"
             motion:moveWhenScrollAtTop="false"
         />
     </Transition>
@@ -32,6 +23,14 @@
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toTopOf="parent" />
+        <Constraint
+            android:id="@+id/filterFab"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_medium" />
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">
@@ -42,6 +41,16 @@
             motion:layout_constraintBottom_toTopOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent" />
+        <Constraint
+            android:id="@+id/filterFab"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleX="0"
+            android:scaleY="0"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_medium" />
 
     </ConstraintSet>
 

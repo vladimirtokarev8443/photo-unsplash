@@ -10,7 +10,8 @@ interface UnsplashApi {
     @GET("/photos")
     suspend fun getPhotos(
         @Query("page") nextPageNumber: Int,
-        @Query("per_page") pageSize: Int
+        @Query("per_page") pageSize: Int,
+        @Query("order_by") popular: String
     ): List<Photo>
 
     @GET("/search/photos")

@@ -42,4 +42,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_filter" />
 
+    <include
+        android:id="@+id/filter"
+        layout="@layout/card_filter_photo" />
+
 </androidx.constraintlayout.motion.widget.MotionLayout>

@@ -9,12 +9,12 @@ class PhotoRepositoryImpl @Inject constructor(
     private val api: UnsplashApi
 ): PhotoRepository {
 
-    override suspend fun getPhotos(nextPageNumber: Int, pageSize: Int, query: String): List<Photo> {
-        return if (query.isBlank()){
-            api.getPhotos(nextPageNumber, pageSize)
-        } else {
-            api.getSearchPhotos(nextPageNumber, pageSize, query).result
-        }
+    override suspend fun getPhotos(nextPageNumber: Int, pageSize: Int, popular: String): List<Photo> {
+        //return if (query.isBlank()){
+         return   api.getPhotos(nextPageNumber, pageSize, popular)
+       // } else {
+        //    api.getSearchPhotos(nextPageNumber, pageSize, query).result
+        //}
     }
 
 }

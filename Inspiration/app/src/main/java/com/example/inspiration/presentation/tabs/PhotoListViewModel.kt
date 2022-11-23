@@ -9,8 +9,11 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.data.paging.NETWORK_PAGE_SIZE
 import com.example.data.paging.PhotoPagingSource
+import com.example.domain.enum.Popular
 import com.example.domain.models.Photo
 import com.example.domain.usecase.photo.GetPhotosUseCase
+import com.example.inspiration.models.FilterPhoto
+import com.example.inspiration.models.FilterSearchPhoto
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -21,9 +24,14 @@ class PhotoListViewModel @Inject constructor(
     private val getPhotosUseCase: GetPhotosUseCase
 ): ViewModel() {
     private val searchFlow = MutableStateFlow<String>("")
+    private val filterFlow = MutableStateFlow(FilterPhoto())
+    private val filterSearchFlow = MutableStateFlow(FilterSearchPhoto())
 
     fun setSeachText(search: String){
         searchFlow.value = search
+    }
+    fun setfilter(newPopular: Popular){
+        filterFlow.update { it.copy(popular = newPopular.value) }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -31,6 +39,14 @@ class PhotoListViewModel @Inject constructor(
         return searchFlow
             .flatMapLatest {
                 getPager(it)
+            }.cachedIn(viewModelScope)
+
+    }
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun getPhotos2(): Flow<PagingData<Photo>> {
+        return filterFlow
+            .flatMapLatest {
+                getPager(it.popular)
             }.cachedIn(viewModelScope)
 
     }

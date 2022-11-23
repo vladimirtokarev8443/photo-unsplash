@@ -14,6 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.example.domain.enum.Popular
 import com.example.domain.models.Photo
 import com.example.inspiration.R
 import com.example.inspiration.adapters.PhotoAdapter
@@ -40,36 +41,7 @@ class PhotoListFragment: BaseFragment<FragmentPhotoListBinding>(FragmentPhotoLis
 
         searchExpandedListener()
 
-        binding.motionContainerPhoto.setTransitionListener(object : MotionLayout.TransitionListener{
-            override fun onTransitionStarted(
-                motionLayout: MotionLayout?,
-                startId: Int,
-                endId: Int
-            ) {
-                Log.d("qqq", "$startId")
-
-            }
-
-            override fun onTransitionChange(
-                motionLayout: MotionLayout?,
-                startId: Int,
-                endId: Int,
-                progress: Float
-            ) {
-            }
-
-            override fun onTransitionCompleted(motionLayout: MotionLayout?, currentId: Int) {
-            }
-
-            override fun onTransitionTrigger(
-                motionLayout: MotionLayout?,
-                triggerId: Int,
-                positive: Boolean,
-                progress: Float
-            ) {
-            }
-        })
-        //filterPhoto()
+        filterPhoto()
     }
 
     private fun initPhotoList(){
@@ -85,7 +57,7 @@ class PhotoListFragment: BaseFragment<FragmentPhotoListBinding>(FragmentPhotoLis
     }
 
     private fun observeViewModel(){
-        viewModel.getPhotos().onEach(::setPhotosAdapter).launchIn(viewLifecycleOwner.lifecycleScope)
+        viewModel.getPhotos2().onEach(::setPhotosAdapter).launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private suspend fun setPhotosAdapter(photos: PagingData<Photo>){
@@ -95,8 +67,12 @@ class PhotoListFragment: BaseFragment<FragmentPhotoListBinding>(FragmentPhotoLis
     private fun searchExpandedListener(){
         binding.photoToolbar.menu.findItem(R.id.actionSearch)
             .expandedSearch(
-                isExpand = {searchTextListener()},
-                isCollapse = {setSearchText("")}
+                isExpand = {
+                    searchTextListener()
+                    binding.filterFab.hide()
+                    binding.filter.motionPhotoFilter.transitionToStart()
+                           },
+                isCollapse = {setSearchText(""); binding.filterFab.show()}
             )
     }
 
@@ -113,9 +89,23 @@ class PhotoListFragment: BaseFragment<FragmentPhotoListBinding>(FragmentPhotoLis
     }
 
     private fun filterPhoto(){
-        binding.filterFab.setOnClickListener { view: View ->
-
+        binding.filterFab.setOnClickListener {
+            binding.filter.motionPhotoFilter.transitionToEnd()
+            binding.filter.motionPhotoFilter.transitionToStart()
         }
+
+        binding.filter.chipGroup.setOnCheckedStateChangeListener { group,_ ->
+            when(group.checkedChipId){
+                R.id.latestChip -> viewModel.setfilter(Popular.LATEST)
+                R.id.oldestChip -> viewModel.setfilter(Popular.OLDEST)
+                else -> viewModel.setfilter(Popular.POPULAR)
+            }
+            binding.filter.motionPhotoFilter.transitionToStart()
+        }
+    }
+
+    private fun filterPhotoWithSearch(){
+
     }
 
 
