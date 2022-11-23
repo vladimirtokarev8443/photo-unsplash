@@ -3,7 +3,7 @@
     <style name="Theme.Inspiration" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/grey</item>
-        <item name="colorPrimaryVariant">@color/grey_dark</item>
+        <item name="colorPrimaryVariant">@color/grey_light</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/yellow</item>
@@ -15,7 +15,7 @@
 
         <item name="bottomNavigationStyle">@style/customBottomNavigation</item>
 
-        <item name="android:windowBackground">@color/grey_light</item>
+        <item name="android:windowBackground">?attr/colorPrimaryVariant</item>
     </style>
 
     <style name="customBottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView">

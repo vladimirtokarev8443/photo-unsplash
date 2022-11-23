@@ -9,6 +9,10 @@
     <string name="menu_item_collection">Коллекции</string>
     <string name="menu_item_user">Профиль</string>
 
+    <string name="menu_item_latest">Новые</string>
+    <string name="menu_item_oldest">Старые</string>
+    <string name="menu_item_popular">Популярные</string>
+
     <string name="menu_toolbar_search">Search</string>
 
     <string name="onboarding_text_first">Создавайте снимки, публикуйте, собирайте аудиторию, получайте фидбек!</string>

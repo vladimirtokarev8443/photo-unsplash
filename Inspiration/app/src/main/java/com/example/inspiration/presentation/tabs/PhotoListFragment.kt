@@ -1,8 +1,15 @@
 package com.example.inspiration.presentation.tabs
 
 import android.os.Bundle
+import android.util.Log
+import android.view.MenuItem
 import android.view.View
+import androidx.annotation.MenuRes
+import androidx.appcompat.widget.ListPopupWindow
+import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.SearchView
+import androidx.cardview.widget.CardView
+import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagingData
@@ -32,8 +39,38 @@ class PhotoListFragment: BaseFragment<FragmentPhotoListBinding>(FragmentPhotoLis
         observeViewModel()
 
         searchExpandedListener()
-        binding.filterFab.setOnClickListener {  }
-        }
+
+        binding.motionContainerPhoto.setTransitionListener(object : MotionLayout.TransitionListener{
+            override fun onTransitionStarted(
+                motionLayout: MotionLayout?,
+                startId: Int,
+                endId: Int
+            ) {
+                Log.d("qqq", "$startId")
+
+            }
+
+            override fun onTransitionChange(
+                motionLayout: MotionLayout?,
+                startId: Int,
+                endId: Int,
+                progress: Float
+            ) {
+            }
+
+            override fun onTransitionCompleted(motionLayout: MotionLayout?, currentId: Int) {
+            }
+
+            override fun onTransitionTrigger(
+                motionLayout: MotionLayout?,
+                triggerId: Int,
+                positive: Boolean,
+                progress: Float
+            ) {
+            }
+        })
+        //filterPhoto()
+    }
 
     private fun initPhotoList(){
         photoAdapter = PhotoAdapter {
@@ -74,6 +111,13 @@ class PhotoListFragment: BaseFragment<FragmentPhotoListBinding>(FragmentPhotoLis
     private fun setSearchText(text: String){
         viewModel.setSeachText(text)
     }
+
+    private fun filterPhoto(){
+        binding.filterFab.setOnClickListener { view: View ->
+
+        }
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
