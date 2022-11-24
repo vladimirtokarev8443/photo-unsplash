@@ -54,7 +54,7 @@
             android:layout_marginBottom="@dimen/margin_small"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_favorites" />
+            app:srcCompat="@drawable/ic_like" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>
