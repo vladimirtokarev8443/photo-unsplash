@@ -4,12 +4,18 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class Photo(
+data class DetailsPhoto(
     val id: String,
     @Json(name = "urls")
     val imageUrl: ImageUrl,
     @Json(name = "user")
     val author: Author,
     @Json(name = "liked_by_user")
-    val isLike: Boolean
+    val isLike: Boolean,
+    @Json(name = "likes")
+    val countLikes: Int,
+
+    val countDownload: Int,
+
+    val discription: String
 )

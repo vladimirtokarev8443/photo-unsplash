@@ -7,20 +7,20 @@
 
     <fragment
         android:id="@+id/photoListFragment"
-        android:name="com.example.inspiration.presentation.tabs.PhotoListFragment"
+        android:name="com.example.inspiration.presentation.tabs.photo.PhotoListFragment"
         android:label="@string/toolbar_title_photo"
         tools:layout="@layout/fragment_photo_list">
         <action
             android:id="@+id/action_photoListFragment_to_detailsPhoto"
-            app:destination="@id/detailsPhoto"
+            app:destination="@id/photoDetailsPhoto"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
-        android:id="@+id/detailsPhoto"
-        android:name="com.example.inspiration.presentation.tabs.photo.DetailsPhoto"
+        android:id="@+id/photoDetailsPhoto"
+        android:name="com.example.inspiration.presentation.tabs.photo.DetailsPhotoFragment"
         android:label="DetailsPhoto"
         tools:layout="@layout/fragment_details_photo">
         <argument

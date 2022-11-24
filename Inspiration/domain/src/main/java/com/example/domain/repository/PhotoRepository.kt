@@ -1,9 +1,11 @@
 package com.example.domain.repository
 
-import com.example.domain.models.Photo
+import com.example.domain.models.DetailsPhoto
 
 interface PhotoRepository {
 
-    suspend fun getPhotos(nextPageNumber: Int, pageSize: Int, popular: String): List<Photo>
+    suspend fun getPhotoById(photoId: String): DetailsPhoto
+
+    suspend fun setLikePhoto()
 
 }

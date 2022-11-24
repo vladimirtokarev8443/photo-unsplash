@@ -3,32 +3,41 @@ package com.example.data.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.data.api.UnsplashApi
+import com.example.data.model.FilterPhoto
 import com.example.domain.models.Photo
-import com.example.domain.usecase.photo.GetPhotosUseCase
-import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.HttpException
 import java.io.IOException
-import javax.inject.Inject
 
 private const val STARTING_PAGE_INDEX = 1
 const val NETWORK_PAGE_SIZE = 30
 
 
 class PhotoPagingSource (
-    private val getPhotosUseCase: GetPhotosUseCase,
-    private val query: String = ""
+    private val api: UnsplashApi,
+    private val filter: FilterPhoto
 ): PagingSource<Int, Photo>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Photo> {
         try {
-
             val position = params.key?: STARTING_PAGE_INDEX
 
-            val photoList = getPhotosUseCase.execute(
+            val photoList = if (filter.querySearch.isBlank()) {
+                api.getPhotos(
                 nextPageNumber = position,
                 pageSize = params.loadSize,
-                popular = query
+                popular = filter.popular
             )
+            } else {
+                api.getSearchPhotos(
+                    nextPageNumber = position,
+                    pageSize = params.loadSize,
+                    query = filter.querySearch,
+                    popular = filter.popularSearch,
+                    orientation = filter.orientation
+                ).result
+            }
+
+
 
             val nextKey = if(photoList.isEmpty()){
                 null

@@ -1,17 +1,11 @@
-package com.example.inspiration.presentation.tabs
+package com.example.inspiration.presentation.tabs.photo
 
 import android.os.Bundle
-import android.util.Log
-import android.view.MenuItem
 import android.view.View
-import androidx.annotation.MenuRes
-import androidx.appcompat.widget.ListPopupWindow
-import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.SearchView
-import androidx.cardview.widget.CardView
-import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.domain.enum.Popular
@@ -45,8 +39,9 @@ class PhotoListFragment: BaseFragment<FragmentPhotoListBinding>(FragmentPhotoLis
     }
 
     private fun initPhotoList(){
-        photoAdapter = PhotoAdapter {
-
+        photoAdapter = PhotoAdapter { photoId ->
+            val action = PhotoListFragmentDirections.actionPhotoListFragmentToDetailsPhoto(photoId)
+            findNavController().navigate(action)
         }
         with(binding.photoItemList){
             adapter = photoAdapter
@@ -85,7 +80,7 @@ class PhotoListFragment: BaseFragment<FragmentPhotoListBinding>(FragmentPhotoLis
     }
 
     private fun setSearchText(text: String){
-        viewModel.setSeachText(text)
+        //viewModel.setSeachText(text)
     }
 
     private fun filterPhoto(){
@@ -96,9 +91,9 @@ class PhotoListFragment: BaseFragment<FragmentPhotoListBinding>(FragmentPhotoLis
 
         binding.filter.chipGroup.setOnCheckedStateChangeListener { group,_ ->
             when(group.checkedChipId){
-                R.id.latestChip -> viewModel.setfilter(Popular.LATEST)
-                R.id.oldestChip -> viewModel.setfilter(Popular.OLDEST)
-                else -> viewModel.setfilter(Popular.POPULAR)
+                R.id.latestChip -> viewModel.setfilterPopular(Popular.LATEST.value)
+                R.id.oldestChip -> viewModel.setfilterPopular(Popular.OLDEST.value)
+                else -> viewModel.setfilterPopular(Popular.POPULAR.value)
             }
             binding.filter.motionPhotoFilter.transitionToStart()
         }

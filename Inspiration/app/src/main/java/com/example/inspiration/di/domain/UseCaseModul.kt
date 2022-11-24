@@ -2,11 +2,11 @@ package com.example.inspiration.di.domain
 
 import com.example.domain.repository.PhotoRepository
 import com.example.domain.repository.VerificationRepository
+import com.example.domain.usecase.photo.GetPhotoByIdUseCase
 import com.example.domain.usecase.verification.GetAccessTokenUseCase
 import com.example.domain.usecase.verification.GetVerificationStatusUseCase
 import com.example.domain.usecase.verification.SaveAccessTokenUseCase
 import com.example.domain.usecase.verification.SaveVerificationStatusUseCase
-import com.example.domain.usecase.photo.GetPhotosUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,8 +32,9 @@ class UseCaseModul {
     fun providesGetVerificationStatus(repository: VerificationRepository): GetVerificationStatusUseCase {
         return GetVerificationStatusUseCase(repository)
     }
+
     @Provides
-    fun providesGetPhotosUseCase(repository: PhotoRepository): GetPhotosUseCase {
-        return GetPhotosUseCase(repository)
+    fun providesGetPhotoByIdUseCase(repository: PhotoRepository): GetPhotoByIdUseCase {
+        return GetPhotoByIdUseCase(repository)
     }
 }

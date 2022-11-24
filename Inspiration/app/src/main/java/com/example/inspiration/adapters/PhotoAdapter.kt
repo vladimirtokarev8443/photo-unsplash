@@ -12,7 +12,7 @@ import com.example.inspiration.utils.setImageGlideCircle
 import com.example.inspiration.utils.viewBinding
 
 class PhotoAdapter(
-    private val onItemClicked: (Int) -> Unit
+    private val onItemClicked: (String) -> Unit
 ) : PagingDataAdapter<Photo, PhotoAdapter.PhotoHolder>(PhotoDiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoHolder {
@@ -36,13 +36,15 @@ class PhotoAdapter(
 
     class PhotoHolder(
         private val binding: ItemPhotoBinding,
-        private val onItemClicked: (Int) -> Unit
+        private val onItemClicked: (String) -> Unit
     ): RecyclerView.ViewHolder(binding.root){
 
         fun bind(item: Photo){
             binding.photoItemPhoto.setImageGlide(item.imageUrl.url)
             binding.avatarItemPhoto.setImageGlideCircle(item.author.avatarUrl.url)
             binding.nameAuthorItemPhoto.text = item.author.name
+
+            binding.root.setOnClickListener{ onItemClicked(item.id) }
         }
     }
 
