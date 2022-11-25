@@ -10,9 +10,7 @@ import com.example.data.api.UnsplashApi
 import com.example.data.model.FilterPhoto
 import com.example.data.paging.NETWORK_PAGE_SIZE
 import com.example.data.paging.PhotoPagingSource
-import com.example.domain.enum.Popular
 import com.example.domain.models.Photo
-import com.example.domain.usecase.photo.GetPhotosUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -20,14 +18,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PhotoListViewModel @Inject constructor(
-    private val api: UnsplashApi,
-    private val getPhotosUseCase: GetPhotosUseCase
+    private val api: UnsplashApi
 ): ViewModel() {
 
     private val filterFlow = MutableStateFlow(FilterPhoto())
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    fun getPhotos2(): Flow<PagingData<Photo>> {
+    fun getPhotos(): Flow<PagingData<Photo>> {
         return filterFlow
             .flatMapLatest {
                 getPager(it)
@@ -50,6 +47,16 @@ class PhotoListViewModel @Inject constructor(
         filterFlow.update { it.copy(popular = popular) }
     }
 
-    fun setFilterPopularSearch(){}
+    fun setFilterPopularSearch(popularSaerch: String){
+        filterFlow.update { it.copy(popularSearch = popularSaerch) }
+    }
+
+    fun setFilterQuerySearch(query: String){
+        filterFlow.update { it.copy(querySearch = query) }
+    }
+
+    fun setFilterOrientationSearch(orientation: String){
+        filterFlow.update { it.copy(orientation = orientation) }
+    }
 
 }

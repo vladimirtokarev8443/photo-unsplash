@@ -44,6 +44,6 @@
 
     <include
         android:id="@+id/filter"
-        layout="@layout/card_filter_photo" />
+        layout="@layout/motion_filter_photo" />
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

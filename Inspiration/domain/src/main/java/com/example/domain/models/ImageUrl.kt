@@ -6,5 +6,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class ImageUrl(
     @Json(name = "small")
-    val url: String
+    val url: String,
+    @Json(name = "full")
+    val downloadUrl: String
 )

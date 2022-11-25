@@ -6,6 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.example.domain.models.DetailsPhoto
+import com.example.inspiration.R
 import com.example.inspiration.databinding.FragmentDetailsPhotoBinding
 import com.example.inspiration.utils.BaseFragment
 import com.example.inspiration.utils.setImageGlide
@@ -22,7 +23,9 @@ class DetailsPhotoFragment: BaseFragment<FragmentDetailsPhotoBinding>(FragmentDe
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         getDetailsPhoto()
+
         observeViewModel()
     }
 
@@ -38,10 +41,14 @@ class DetailsPhotoFragment: BaseFragment<FragmentDetailsPhotoBinding>(FragmentDe
             .launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
-    private fun bindDetailsPhoto(photo: DetailsPhoto){
-        binding.photoDetailsPhoto.setImageGlide(photo.imageUrl.url)
-        binding.avatarDetailsPhoto.setImageGlideCircle(photo.author.avatarUrl.url)
-
+    private fun bindDetailsPhoto(photo: DetailsPhoto) = with(binding){
+        photoDetailsPhoto.setImageGlide(photo.imageUrl.url)
+        avatarDetailsPhoto.setImageGlideCircle(photo.author.avatarUrl.url)
+        nameAuthorDetailsPhoto.text = photo.author.name
+        discriptionsDetailsPhoto.text = photo.discription
+        countLikesDetailsPhoto.text = photo.countLikes.toString()
+        countDownloadDetailsPhoto.text = photo.countDownload.toString()
+        likeDetailsPhoto.setImageResource(if (photo.isLike) R.drawable.ic_like_selected else R.drawable.ic_like)
     }
 
 }

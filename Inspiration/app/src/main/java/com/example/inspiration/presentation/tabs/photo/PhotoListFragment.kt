@@ -52,7 +52,7 @@ class PhotoListFragment: BaseFragment<FragmentPhotoListBinding>(FragmentPhotoLis
     }
 
     private fun observeViewModel(){
-        viewModel.getPhotos2().onEach(::setPhotosAdapter).launchIn(viewLifecycleOwner.lifecycleScope)
+        viewModel.getPhotos().onEach(::setPhotosAdapter).launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private suspend fun setPhotosAdapter(photos: PagingData<Photo>){
@@ -67,7 +67,10 @@ class PhotoListFragment: BaseFragment<FragmentPhotoListBinding>(FragmentPhotoLis
                     binding.filterFab.hide()
                     binding.filter.motionPhotoFilter.transitionToStart()
                            },
-                isCollapse = {setSearchText(""); binding.filterFab.show()}
+                isCollapse = {
+                    setSearchText("")
+                    binding.filterFab.show()
+                }
             )
     }
 
@@ -80,7 +83,7 @@ class PhotoListFragment: BaseFragment<FragmentPhotoListBinding>(FragmentPhotoLis
     }
 
     private fun setSearchText(text: String){
-        //viewModel.setSeachText(text)
+        viewModel.setFilterQuerySearch(query = text)
     }
 
     private fun filterPhoto(){
