@@ -6,13 +6,14 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.models.Photo
+import com.example.inspiration.R
 import com.example.inspiration.databinding.ItemPhotoBinding
 import com.example.inspiration.utils.setImageGlide
 import com.example.inspiration.utils.setImageGlideCircle
 import com.example.inspiration.utils.viewBinding
 
 class PhotoAdapter(
-    private val onItemClicked: (String) -> Unit
+    private val onItemClicked: (String, Boolean?) -> Unit
 ) : PagingDataAdapter<Photo, PhotoAdapter.PhotoHolder>(PhotoDiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoHolder {
@@ -36,15 +37,25 @@ class PhotoAdapter(
 
     class PhotoHolder(
         private val binding: ItemPhotoBinding,
-        private val onItemClicked: (String) -> Unit
+        private val onItemClicked: (String, Boolean?) -> Unit,
     ): RecyclerView.ViewHolder(binding.root){
 
-        fun bind(item: Photo){
-            binding.photoItemPhoto.setImageGlide(item.imageUrl.url)
-            binding.avatarItemPhoto.setImageGlideCircle(item.author.avatarUrl.url)
-            binding.nameAuthorItemPhoto.text = item.author.name
+        fun bind(item: Photo) {
 
-            binding.root.setOnClickListener{ onItemClicked(item.id) }
+        var isClick = item.isLike
+
+        binding.photoItemPhoto.setImageGlide(item.imageUrl.url)
+            binding.avatarItemPhoto.setImageGlideCircle(item.author.avatarUrl.smallUrl)
+            binding.nameAuthorItemPhoto.text = item.author.name
+            binding.favoritesItemPhoto.setImageResource(if (isClick) R.drawable.ic_like_selected else R.drawable.ic_like)
+
+            binding.root.setOnClickListener{ onItemClicked(item.id, null) }
+
+            binding.favoritesItemPhoto.setOnClickListener {
+                isClick = isClick.not()
+                binding.favoritesItemPhoto.setImageResource(if (isClick) R.drawable.ic_like_selected else R.drawable.ic_like)
+                onItemClicked(item.id, isClick)
+            }
         }
     }
 

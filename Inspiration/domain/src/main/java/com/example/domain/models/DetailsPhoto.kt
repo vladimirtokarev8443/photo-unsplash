@@ -10,6 +10,8 @@ data class DetailsPhoto(
     val imageUrl: ImageUrl,
     @Json(name = "blur_hash")
     val blurHash: String,
+    @Json(name = "color")
+    val color: String,
     @Json(name = "user")
     val author: Author,
     @Json(name = "liked_by_user")
@@ -19,5 +21,5 @@ data class DetailsPhoto(
     @Json(name = "downloads")
     val countDownload: Int,
     @Json(name = "description")
-    val discription: String
+    val discription: String?
 )

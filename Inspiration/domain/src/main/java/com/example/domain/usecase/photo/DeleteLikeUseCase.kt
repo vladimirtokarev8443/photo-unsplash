@@ -1,4 +1,10 @@
 package com.example.domain.usecase.photo
 
-class DeleteLikeUseCase {
+import com.example.domain.repository.PhotoRepository
+import javax.inject.Inject
+
+class DeleteLikeUseCase @Inject constructor(
+    private val repository: PhotoRepository
+) {
+    suspend fun execute(photoId: String) = repository.deleteLike(photoId)
 }

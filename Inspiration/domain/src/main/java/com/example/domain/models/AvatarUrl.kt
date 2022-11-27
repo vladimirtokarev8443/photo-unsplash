@@ -4,7 +4,9 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class ImageUrl(
+data class AvatarUrl(
     @Json(name = "small")
-    val url: String
+    val smallUrl: String,
+    @Json(name = "large")
+    val largeUrl: String
 )

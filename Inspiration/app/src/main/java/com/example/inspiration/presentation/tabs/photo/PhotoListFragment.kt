@@ -39,9 +39,11 @@ class PhotoListFragment: BaseFragment<FragmentPhotoListBinding>(FragmentPhotoLis
     }
 
     private fun initPhotoList(){
-        photoAdapter = PhotoAdapter { photoId ->
-            val action = PhotoListFragmentDirections.actionPhotoListFragmentToDetailsPhoto(photoId)
-            findNavController().navigate(action)
+        photoAdapter = PhotoAdapter { photoId, isClick ->
+            isClick?.let {
+                viewModel.updateLike(it, photoId)
+            } ?: navigateToDetailsPhoto(photoId)
+
         }
         with(binding.photoItemList){
             adapter = photoAdapter
@@ -52,7 +54,7 @@ class PhotoListFragment: BaseFragment<FragmentPhotoListBinding>(FragmentPhotoLis
     }
 
     private fun observeViewModel(){
-        viewModel.getPhotos().onEach(::setPhotosAdapter).launchIn(viewLifecycleOwner.lifecycleScope)
+        viewModel.pagingDataFlow.onEach(::setPhotosAdapter).launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private suspend fun setPhotosAdapter(photos: PagingData<Photo>){
@@ -62,24 +64,33 @@ class PhotoListFragment: BaseFragment<FragmentPhotoListBinding>(FragmentPhotoLis
     private fun searchExpandedListener(){
         binding.photoToolbar.menu.findItem(R.id.actionSearch)
             .expandedSearch(
-                isExpand = {
-                    searchTextListener()
-                    binding.filterFab.hide()
-                    binding.filter.motionPhotoFilter.transitionToStart()
-                           },
-                isCollapse = {
-                    setSearchText("")
-                    binding.filterFab.show()
-                }
+                isExpand = { expandSearchView() },
+                isCollapse = { collapseSearchView() }
             )
+    }
+
+    private fun expandSearchView(){
+        searchTextListener()
+        binding.filter.motionPhotoFilter.transitionToStart()
+        binding.motionContainerPhoto.setTransition(R.id.fabTransition)
+        binding.motionContainerPhoto.transitionToEnd()
     }
 
     private fun searchTextListener(){
         if (job == null){
             job = (binding.photoToolbar.menu.findItem(R.id.actionSearch).actionView as SearchView)
-                    .changeText().onEach(::setSearchText).launchIn(viewLifecycleOwner.lifecycleScope)
+                .changeText()
+                .onEach(::setSearchText)
+                .launchIn(viewLifecycleOwner.lifecycleScope)
         }
 
+    }
+
+    private fun collapseSearchView(){
+        job = null
+        setSearchText("")
+        binding.motionContainerPhoto.transitionToStart()
+        binding.motionContainerPhoto.setTransition(R.id.toolbarTransition)
     }
 
     private fun setSearchText(text: String){
@@ -101,11 +112,6 @@ class PhotoListFragment: BaseFragment<FragmentPhotoListBinding>(FragmentPhotoLis
             binding.filter.motionPhotoFilter.transitionToStart()
         }
     }
-
-    private fun filterPhotoWithSearch(){
-
-    }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

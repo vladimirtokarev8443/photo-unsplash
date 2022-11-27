@@ -9,5 +9,5 @@ data class Author(
     @Json(name = "username")
     val name: String,
     @Json(name = "profile_image")
-    val avatarUrl: ImageUrl
+    val avatarUrl: AvatarUrl
 )

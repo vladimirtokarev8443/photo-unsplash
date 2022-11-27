@@ -1,5 +1,6 @@
 package com.example.data.paging
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.data.api.UnsplashApi
@@ -20,7 +21,6 @@ class PhotoPagingSource (
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Photo> {
         try {
             val position = params.key?: STARTING_PAGE_INDEX
-
             val photoList = if (filter.querySearch.isBlank()) {
                 api.getPhotos(
                 nextPageNumber = position,
@@ -31,9 +31,9 @@ class PhotoPagingSource (
                 api.getSearchPhotos(
                     nextPageNumber = position,
                     pageSize = params.loadSize,
-                    query = filter.querySearch,
-                    popular = filter.popularSearch,
-                    orientation = filter.orientation
+                    query = filter.querySearch
+                    //popular = filter.popularSearch,
+                    //orientation = filter.orientation
                 ).result
             }
 

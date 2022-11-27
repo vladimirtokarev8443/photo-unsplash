@@ -2,9 +2,12 @@ package com.example.inspiration.presentation.tabs.photo
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.setupWithNavController
 import com.example.domain.models.DetailsPhoto
 import com.example.inspiration.R
 import com.example.inspiration.databinding.FragmentDetailsPhotoBinding
@@ -24,6 +27,8 @@ class DetailsPhotoFragment: BaseFragment<FragmentDetailsPhotoBinding>(FragmentDe
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.toolbarDetailsPhoto.setupWithNavController(findNavController())
+
         getDetailsPhoto()
 
         observeViewModel()
@@ -35,19 +40,19 @@ class DetailsPhotoFragment: BaseFragment<FragmentDetailsPhotoBinding>(FragmentDe
 
     private fun observeViewModel(){
         viewModel.detailsPhotoFlow
-            .onEach { detailsPhoto ->
-                detailsPhoto?.let(::bindDetailsPhoto)
-            }
+            .onEach { detailsPhoto -> detailsPhoto?.let(::bindDetailsPhoto) }
             .launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private fun bindDetailsPhoto(photo: DetailsPhoto) = with(binding){
         photoDetailsPhoto.setImageGlide(photo.imageUrl.url)
-        avatarDetailsPhoto.setImageGlideCircle(photo.author.avatarUrl.url)
+        avatarDetailsPhoto.setImageGlideCircle(photo.author.avatarUrl.largeUrl)
+
         nameAuthorDetailsPhoto.text = photo.author.name
         discriptionsDetailsPhoto.text = photo.discription
         countLikesDetailsPhoto.text = photo.countLikes.toString()
         countDownloadDetailsPhoto.text = photo.countDownload.toString()
+
         likeDetailsPhoto.setImageResource(if (photo.isLike) R.drawable.ic_like_selected else R.drawable.ic_like)
     }
 

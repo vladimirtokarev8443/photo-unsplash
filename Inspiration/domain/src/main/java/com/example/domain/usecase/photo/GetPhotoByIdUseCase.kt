@@ -9,5 +9,7 @@ import javax.inject.Inject
 class GetPhotoByIdUseCase @Inject constructor(
     private val repository: PhotoRepository
 ) {
-    suspend fun execute(photoId: String): DetailsPhoto = withContext(Dispatchers.IO){ repository.getPhotoById(photoId) }
+    suspend fun execute(photoId: String): DetailsPhoto = withContext(Dispatchers.IO){
+        return@withContext repository.getPhotoById(photoId)
+    }
 }

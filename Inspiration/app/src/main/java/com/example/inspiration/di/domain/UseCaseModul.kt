@@ -2,7 +2,9 @@ package com.example.inspiration.di.domain
 
 import com.example.domain.repository.PhotoRepository
 import com.example.domain.repository.VerificationRepository
+import com.example.domain.usecase.photo.DeleteLikeUseCase
 import com.example.domain.usecase.photo.GetPhotoByIdUseCase
+import com.example.domain.usecase.photo.SetLikeUseCase
 import com.example.domain.usecase.verification.GetAccessTokenUseCase
 import com.example.domain.usecase.verification.GetVerificationStatusUseCase
 import com.example.domain.usecase.verification.SaveAccessTokenUseCase
@@ -36,5 +38,15 @@ class UseCaseModul {
     @Provides
     fun providesGetPhotoByIdUseCase(repository: PhotoRepository): GetPhotoByIdUseCase {
         return GetPhotoByIdUseCase(repository)
+    }
+
+    @Provides
+    fun providesSetLikeUseCase(repository: PhotoRepository): SetLikeUseCase {
+        return SetLikeUseCase(repository)
+    }
+
+    @Provides
+    fun providesDeleteLikeUseCase(repository: PhotoRepository): DeleteLikeUseCase {
+        return DeleteLikeUseCase(repository)
     }
 }
