@@ -2,7 +2,7 @@
 
 Приложение для просмотра фотографий работающее с Unsplash API
 
-![Screen 1](https://github.com/vladimirtokarev8443/lessonsProject/blob/main/Screen_1.jpg)
+![Screen 1](<img src="https://github.com/vladimirtokarev8443/lessonsProject/blob/main/Screen_1.jpg" width="400" height="790">)
 
 Приложение для популярного сервиса с фотографиями Unsplash.
 Позволяет смотреть фотографии, коллекции фотографий.
