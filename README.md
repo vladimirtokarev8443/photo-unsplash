@@ -2,7 +2,7 @@
 
 Приложение для просмотра фотографий работающее с Unsplash API
 
-![](https://drive.google.com/file/d/1Eh1IH6gGLifMoF-h9f4pCGjZtv2scF6y/view?usp=drivesdk)
+![](drive.google.com/file/d/1Eh1IH6gGLifMoF-h9f4pCGjZtv2scF6y/view?usp=drivesdk)
 
 Приложение для популярного сервиса с фотографиями Unsplash.
 Позволяет смотреть фотографии, коллекции фотографий.
