@@ -17,4 +17,6 @@
 В основной части три раздела в bottom navigation menu: «Фотографии»,
 «Коллекции», «Пользователь».
 
+[Hilt, внедрение зависимостей для Retrofit 2](https://github.com/vladimirtokarev8443/photo-unsplash/blob/main/Inspiration/app/src/main/java/com/example/inspiration/di/data/NetworkingModule.kt)
+
 Стек технологий: Dagger Hilt, Retrofit 2, Jetpack Navigation, Jetpack Paging 3, Room 
