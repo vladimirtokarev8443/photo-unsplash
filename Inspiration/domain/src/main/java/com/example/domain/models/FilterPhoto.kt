@@ -1,4 +1,4 @@
-package com.example.data.model
+package com.example.domain.models
 
 import com.example.domain.enum.Popular
 import com.example.domain.enum.PopularSearch

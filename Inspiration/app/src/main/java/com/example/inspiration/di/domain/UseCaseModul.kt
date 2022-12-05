@@ -4,6 +4,7 @@ import com.example.domain.repository.PhotoRepository
 import com.example.domain.repository.VerificationRepository
 import com.example.domain.usecase.photo.DeleteLikeUseCase
 import com.example.domain.usecase.photo.GetPhotoByIdUseCase
+import com.example.domain.usecase.photo.GetPhotosUseCase
 import com.example.domain.usecase.photo.SetLikeUseCase
 import com.example.domain.usecase.verification.GetAccessTokenUseCase
 import com.example.domain.usecase.verification.GetVerificationStatusUseCase
@@ -33,6 +34,11 @@ class UseCaseModul {
     @Provides
     fun providesGetVerificationStatus(repository: VerificationRepository): GetVerificationStatusUseCase {
         return GetVerificationStatusUseCase(repository)
+    }
+
+    @Provides
+    fun providesGetPhotosUseCase(repository: PhotoRepository): GetPhotosUseCase {
+        return GetPhotosUseCase(repository)
     }
 
     @Provides

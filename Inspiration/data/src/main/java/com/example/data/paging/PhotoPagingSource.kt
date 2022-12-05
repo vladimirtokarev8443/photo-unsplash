@@ -1,53 +1,32 @@
 package com.example.data.paging
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.data.api.UnsplashApi
-import com.example.data.model.FilterPhoto
 import com.example.domain.models.Photo
 import retrofit2.HttpException
 import java.io.IOException
 
 private const val STARTING_PAGE_INDEX = 1
-const val NETWORK_PAGE_SIZE = 30
+const val PAGE_SIZE = 15
 
+typealias LoaderPhoto = suspend (pageIndex: Int, pageSize: Int) -> List<Photo>
 
 class PhotoPagingSource (
-    private val api: UnsplashApi,
-    private val filter: FilterPhoto
+    private val loader: LoaderPhoto
 ): PagingSource<Int, Photo>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Photo> {
         try {
-            val position = params.key?: STARTING_PAGE_INDEX
-            val photoList = if (filter.querySearch.isBlank()) {
-                api.getPhotos(
-                nextPageNumber = position,
-                pageSize = params.loadSize,
-                popular = filter.popular
-            )
-            } else {
-                api.getSearchPhotos(
-                    nextPageNumber = position,
-                    pageSize = params.loadSize,
-                    query = filter.querySearch
-                    //popular = filter.popularSearch,
-                    //orientation = filter.orientation
-                ).result
-            }
+            val pageIndex = params.key ?: STARTING_PAGE_INDEX
 
+            val photos = loader.invoke(pageIndex, params.loadSize)
 
-
-            val nextKey = if(photoList.isEmpty()){
-                null
-            } else {
-                position + (params.loadSize / NETWORK_PAGE_SIZE)
-            }
             return LoadResult.Page(
-                data = photoList,
-                prevKey = if(position == STARTING_PAGE_INDEX) null else position,
-                nextKey = nextKey
+                data = photos,
+                prevKey = if(pageIndex == STARTING_PAGE_INDEX) null else pageIndex - 1,
+                //prevKey = if(pageIndex == STARTING_PAGE_INDEX) null else pageIndex,//попробовать -1
+                nextKey = if (photos.size == params.loadSize) pageIndex + (params.loadSize / PAGE_SIZE) else null
+                //nextKey = if(photos.isEmpty()) null else position + (params.loadSize / PAGE_SIZE)
             )
         }catch (exception: IOException) {
             return LoadResult.Error(exception)
