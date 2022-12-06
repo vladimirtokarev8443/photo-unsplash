@@ -32,6 +32,8 @@ class DetailsPhotoFragment: BaseFragment<FragmentDetailsPhotoBinding>(FragmentDe
         getDetailsPhoto()
 
         observeViewModel()
+
+        listeners()
     }
 
     private fun getDetailsPhoto(){
@@ -54,6 +56,12 @@ class DetailsPhotoFragment: BaseFragment<FragmentDetailsPhotoBinding>(FragmentDe
         countDownloadDetailsPhoto.text = photo.countDownload.toString()
 
         likeDetailsPhoto.setImageResource(if (photo.isLike) R.drawable.ic_like_selected else R.drawable.ic_like)
+    }
+
+    private fun listeners(){
+        binding.likeDetailsPhoto.setOnClickListener {
+            viewModel.onClicLike(args.photoId)
+        }
     }
 
 }

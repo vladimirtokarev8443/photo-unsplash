@@ -14,9 +14,9 @@ interface PhotoRepository {
 
     suspend fun deleteLike(photoId: String)
 
-    suspend fun savePhotoWithLike()
+    suspend fun savePhotoToDatabase(photoId: String)
 
-    suspend fun deletePhotoWithLikeById()
+    suspend fun removePhotoFromDatabase(photoId: String)
 
     suspend fun downloadPhoto(url: String)
 

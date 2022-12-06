@@ -19,7 +19,6 @@ import com.example.inspiration.R
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -71,7 +70,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getDestinationId(status: VerificationStatus): Int {
-        Timber.d(status.name)
         return when(status){
             VerificationStatus.FIRST_VIZIT -> {R.id.onboardingFragment}
             VerificationStatus.NOT_VERIFIED -> {R.id.authFragment}
