@@ -2,7 +2,6 @@ package com.example.inspiration.presentation.tabs.photo
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -60,7 +59,7 @@ class DetailsPhotoFragment: BaseFragment<FragmentDetailsPhotoBinding>(FragmentDe
 
     private fun listeners(){
         binding.likeDetailsPhoto.setOnClickListener {
-            viewModel.onClicLike(args.photoId)
+            viewModel.onClickLike(args.photoId)
         }
     }
 

@@ -33,7 +33,7 @@ class DetailsPhotoViewModel @Inject constructor(
         } catch (e: Exception){}
     }
 
-    fun onClicLike(photoId: String){
+    fun onClickLike(photoId: String){
         try {
             val isLike = detailsPhotoMutFlow.value?.isLike?.not() ?: return
 

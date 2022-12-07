@@ -1,5 +1,6 @@
 package com.example.data.room
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.data.model.PhotoDb
 import kotlinx.coroutines.flow.Flow
@@ -8,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 interface PhotoDao {
 
     @Query("SELECT * FROM ${PhotoDbContract.TABLE_NAME}")
-    suspend fun getAllPhotos(): Flow<List<PhotoDb>>
+    suspend fun getAllPhotos(): List<PhotoDb>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPhoto(photoDb: PhotoDb)

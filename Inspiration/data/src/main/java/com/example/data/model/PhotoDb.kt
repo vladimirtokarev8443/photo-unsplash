@@ -7,7 +7,7 @@ import com.example.data.room.PhotoDbContract
 
 @Entity(tableName = PhotoDbContract.TABLE_NAME)
 data class PhotoDb(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @ColumnInfo(name = PhotoDbContract.Columns.ID)
     val id: String,
     @ColumnInfo(name = PhotoDbContract.Columns.IMAGE_URL)
