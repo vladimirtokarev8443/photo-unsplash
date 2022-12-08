@@ -2,7 +2,7 @@ package com.example.inspiration.presentation.tabs.photo
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.isVisible
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -60,8 +60,25 @@ class DetailsPhotoFragment: BaseFragment<FragmentDetailsPhotoBinding>(FragmentDe
 
     private fun listeners(){
         binding.likeDetailsPhoto.setOnClickListener {
-            viewModel.onClicLike(args.photoId)
+            viewModel.onClicLike(args.photoId, ::transmittingResultFragment)
+        }
+
+        binding.downloadDetailsPhoto.setOnClickListener {
+
         }
     }
+
+    private fun transmittingResultFragment(isLike: Boolean){
+        parentFragmentManager.setFragmentResult(REQUEST_CODE, bundleOf(LIKE_KEY to isLike, PHOTO_ID_KEY to args.photoId))
+    }
+
+    companion object{
+        const val REQUEST_CODE = "request_code_is_like"
+        const val LIKE_KEY = "like_key"
+        const val PHOTO_ID_KEY = "photo_id_key"
+
+
+    }
+
 
 }

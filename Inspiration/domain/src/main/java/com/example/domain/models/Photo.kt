@@ -8,6 +8,8 @@ data class Photo(
     val id: String,
     @Json(name = "urls")
     val imageUrl: ImageUrl,
+    @Json(name = "blur_hash")
+    val blurHash: String,
     @Json(name = "user")
     val author: Author,
     @Json(name = "liked_by_user")

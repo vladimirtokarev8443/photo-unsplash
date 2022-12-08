@@ -5,7 +5,6 @@ import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.domain.enum.Popular
@@ -13,6 +12,9 @@ import com.example.domain.models.Photo
 import com.example.inspiration.R
 import com.example.inspiration.adapters.PhotoAdapter
 import com.example.inspiration.databinding.FragmentPhotoListBinding
+import com.example.inspiration.presentation.tabs.photo.DetailsPhotoFragment.Companion.LIKE_KEY
+import com.example.inspiration.presentation.tabs.photo.DetailsPhotoFragment.Companion.PHOTO_ID_KEY
+import com.example.inspiration.presentation.tabs.photo.DetailsPhotoFragment.Companion.REQUEST_CODE
 import com.example.inspiration.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -36,6 +38,8 @@ class PhotoListFragment: BaseFragment<FragmentPhotoListBinding>(FragmentPhotoLis
         searchExpandedListener()
 
         filterPhoto()
+
+        getResultToFragment()
     }
 
     private fun initPhotoList(){
@@ -112,6 +116,15 @@ class PhotoListFragment: BaseFragment<FragmentPhotoListBinding>(FragmentPhotoLis
             binding.filter.motionPhotoFilter.transitionToStart()
         }
     }
+
+    private fun getResultToFragment(){
+        parentFragmentManager.setFragmentResultListener(REQUEST_CODE, viewLifecycleOwner){requestCode, data ->
+            val isLike = data.getBoolean(LIKE_KEY)
+            val photoId = data.getString(PHOTO_ID_KEY)
+            photoId?.let{ viewModel.setLocalChange(it, isLike) }
+        }
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

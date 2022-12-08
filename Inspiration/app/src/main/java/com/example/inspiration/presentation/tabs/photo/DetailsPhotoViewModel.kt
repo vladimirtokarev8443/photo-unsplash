@@ -33,20 +33,16 @@ class DetailsPhotoViewModel @Inject constructor(
         } catch (e: Exception){}
     }
 
-    fun onClicLike(photoId: String){
+    fun onClicLike(photoId: String, onLike: (Boolean) -> Unit){
         try {
             val isLike = detailsPhotoMutFlow.value?.isLike?.not() ?: return
 
             detailsPhotoMutFlow.update { it?.copy(isLike = isLike)  }
 
             job?.cancel()
-
             job = viewModelScope.launch {
-                if (isLike){
-                    setLikeUseCase.execute(photoId)
-                } else {
-                    deleteLikeUseCase.execute(photoId)
-                }
+                if (isLike) setLikeUseCase.execute(photoId) else deleteLikeUseCase.execute(photoId)
+                onLike(isLike)
             }
         } catch (e: Exception){}
 

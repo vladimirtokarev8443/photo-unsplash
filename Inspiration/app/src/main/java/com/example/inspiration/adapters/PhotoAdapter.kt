@@ -8,9 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.models.Photo
 import com.example.inspiration.R
 import com.example.inspiration.databinding.ItemPhotoBinding
-import com.example.inspiration.utils.setImageGlide
-import com.example.inspiration.utils.setImageGlideCircle
-import com.example.inspiration.utils.viewBinding
+import com.example.inspiration.utils.*
+import xyz.belvi.blurhash.BlurHash
 
 class PhotoAdapter(
     private val onItemClicked: (String, Boolean?) -> Unit
@@ -41,20 +40,23 @@ class PhotoAdapter(
     ): RecyclerView.ViewHolder(binding.root){
 
         fun bind(item: Photo) {
+        //val blurHash: BlurHash = BlurHash(itemView.context)
+        var isLike = item.isLike
 
-        var isClick = item.isLike
-
-        binding.photoItemPhoto.setImageGlide(item.imageUrl.url)
+            binding.photoItemPhoto.setImageClideBlurHash(item.imageUrl.url, BlurHash(itemView.context), item.blurHash)
+            //binding.photoItemPhoto.setImageGlide(item.imageUrl.url)
             binding.avatarItemPhoto.setImageGlideCircle(item.author.avatarUrl.smallUrl)
             binding.nameAuthorItemPhoto.text = item.author.name
-            binding.favoritesItemPhoto.setImageResource(if (isClick) R.drawable.ic_like_selected else R.drawable.ic_like)
+            binding.favoritesItemPhoto.setImageLike(isLike)
+            //binding.favoritesItemPhoto.setImageResource(if (isLike) R.drawable.ic_like_selected else R.drawable.ic_like)
 
             binding.root.setOnClickListener{ onItemClicked(item.id, null) }
 
             binding.favoritesItemPhoto.setOnClickListener {
-                isClick = isClick.not()
-                binding.favoritesItemPhoto.setImageResource(if (isClick) R.drawable.ic_like_selected else R.drawable.ic_like)
-                onItemClicked(item.id, isClick)
+                isLike = isLike.not()
+                binding.favoritesItemPhoto.setImageLike(isLike)
+                //binding.favoritesItemPhoto.setImageResource(if (isLike) R.drawable.ic_like_selected else R.drawable.ic_like)
+                onItemClicked(item.id, isLike)
             }
         }
     }

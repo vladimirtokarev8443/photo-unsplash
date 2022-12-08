@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import androidx.viewbinding.ViewBinding
@@ -17,6 +18,8 @@ import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import xyz.belvi.blurhash.BlurHash
+import xyz.belvi.blurhash.blurPlaceHolder
 
 inline fun <T : ViewBinding> ViewGroup.viewBinding(
     crossinline bindingInflater: (LayoutInflater, ViewGroup, Boolean) -> T): T{
@@ -36,12 +39,26 @@ fun ImageView.setImageGlide(url: String){
         .load(url)
         .into(this)
 }
+
 fun ImageView.setImageGlideCircle(url: String){
     Glide.with(this)
         .load(url)
         .circleCrop()
         .into(this)
 }
+
+fun ImageView.setImageClideBlurHash(url: String, blurHash: BlurHash, blurString: String){
+    Glide.with(this)
+        .load(url)
+        .blurPlaceHolder(blurString, this, blurHash){ requestBuilder ->
+            requestBuilder.into(this)
+        }
+}
+
+fun ImageButton.setImageLike(isLike: Boolean){
+    setImageResource(if (isLike) R.drawable.ic_like_selected else R.drawable.ic_like)
+}
+
 //устанавливает иконку но больше не нужен
 fun View.setIconSearchView(){
     findViewById<SearchView>(R.id.actionSearch)
