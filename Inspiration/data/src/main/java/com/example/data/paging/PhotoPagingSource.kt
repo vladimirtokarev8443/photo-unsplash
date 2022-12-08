@@ -25,8 +25,8 @@ class PhotoPagingSource (
                 data = photos,
                 prevKey = if(pageIndex == STARTING_PAGE_INDEX) null else pageIndex - 1,
                 //prevKey = if(pageIndex == STARTING_PAGE_INDEX) null else pageIndex,//попробовать -1
-                nextKey = if (photos.size == params.loadSize) pageIndex + (params.loadSize / PAGE_SIZE) else null
-                //nextKey = if(photos.isEmpty()) null else position + (params.loadSize / PAGE_SIZE)
+                //nextKey = if (photos.size == params.loadSize) pageIndex + (params.loadSize / PAGE_SIZE) else null
+                nextKey = if(photos.isEmpty()) null else pageIndex + (params.loadSize / PAGE_SIZE)
             )
         }catch (exception: IOException) {
             return LoadResult.Error(exception)

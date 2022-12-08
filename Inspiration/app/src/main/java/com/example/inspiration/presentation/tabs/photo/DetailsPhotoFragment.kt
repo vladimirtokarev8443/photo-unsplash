@@ -2,7 +2,10 @@ package com.example.inspiration.presentation.tabs.photo
 
 import android.os.Bundle
 import android.view.View
+<<<<<<< HEAD
 import androidx.core.os.bundleOf
+=======
+>>>>>>> 34f7a13c999eaf0d703514b83984035b52d04eb1
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -61,6 +64,7 @@ class DetailsPhotoFragment: BaseFragment<FragmentDetailsPhotoBinding>(FragmentDe
     private fun listeners(){
         binding.likeDetailsPhoto.setOnClickListener {
             viewModel.onClicLike(args.photoId, ::transmittingResultFragment)
+
         }
 
         binding.downloadDetailsPhoto.setOnClickListener {

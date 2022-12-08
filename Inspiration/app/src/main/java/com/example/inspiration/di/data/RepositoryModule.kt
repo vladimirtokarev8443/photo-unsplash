@@ -4,6 +4,7 @@ import android.app.Application
 import com.example.data.api.UnsplashApi
 import com.example.data.repository.PhotoRepositoryImpl
 import com.example.data.repository.VerificationRepositoryImpl
+import com.example.data.room.PhotoDao
 import com.example.domain.repository.PhotoRepository
 import com.example.domain.repository.VerificationRepository
 import dagger.Module
@@ -27,8 +28,8 @@ class RepositoryModule {
     }
 
     @Provides
-    fun providesPhotoRepositoryImpl(api: UnsplashApi): PhotoRepository {
-        return PhotoRepositoryImpl(api)
+    fun providesPhotoRepositoryImpl(api: UnsplashApi, photoDao: PhotoDao): PhotoRepository {
+        return PhotoRepositoryImpl(api, photoDao)
     }
 
 }
