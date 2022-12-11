@@ -1,137 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:transitionName="@string/transition_name_details"
+    app:cardBackgroundColor="@color/grey_light"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarDetailsPhoto"
-        android:layout_width="0dp"
-        android:layout_height="?attr/actionBarSize"
-        android:elevation="8dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/avatarDetailsPhoto"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:scaleType="centerCrop"
-        android:layout_marginStart="@dimen/margin_medium"
-        android:layout_marginTop="@dimen/margin_medium"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbarDetailsPhoto"
-        tools:srcCompat="@tools:sample/avatars" />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarDetailsPhoto"
+            android:layout_width="0dp"
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="8dp"
+            android:background="@color/grey_light"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/nameAuthorDetailsPhoto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="104dp"
-        android:layout_marginBottom="@dimen/margin_small"
-        tools:text="Name author"
-        android:textStyle="bold"
-        android:textColor="?attr/colorOnPrimary"
-        app:layout_constraintBottom_toTopOf="@+id/discriptionsDetailsPhoto"
-        app:layout_constraintStart_toStartOf="parent" />
+        <ImageView
+            android:id="@+id/avatarDetailsPhoto"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:scaleType="centerCrop"
+            android:transitionName="@string/transition_name_avatar_details"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbarDetailsPhoto"
+            tools:srcCompat="@tools:sample/avatars" />
 
-    <TextView
-        android:id="@+id/discriptionsDetailsPhoto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="104dp"
-        android:layout_marginTop="68dp"
-        android:textColor="?attr/colorOnPrimary"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbarDetailsPhoto"
-        tools:text="Описание фотографи" />
+        <TextView
+            android:id="@+id/nameAuthorDetailsPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="104dp"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:textColor="?attr/colorOnPrimary"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/discriptionsDetailsPhoto"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Name author" />
 
-    <ImageView
-        android:id="@+id/photoDetailsPhoto"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/margin_small"
-        android:layout_marginBottom="@dimen/margin_small"
-        android:adjustViewBounds="true"
-        tools:srcCompat="@tools:sample/avatars"
-        app:layout_constraintBottom_toTopOf="@id/locationDetailsPhoto"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/discriptionsDetailsPhoto" />
+        <TextView
+            android:id="@+id/discriptionsDetailsPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="104dp"
+            android:layout_marginTop="68dp"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbarDetailsPhoto"
+            tools:text="Описание фотографи" />
 
-    <TextView
-        android:id="@+id/locationDetailsPhoto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_small"
-        android:text="Monreal, Canada"
-        android:textColor="?attr/colorOnPrimary"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/locationImageDetailsPhoto"
-        app:layout_constraintStart_toEndOf="@id/locationImageDetailsPhoto"
-        app:layout_constraintTop_toTopOf="@+id/locationImageDetailsPhoto" />
+        <ImageView
+            android:id="@+id/photoDetailsPhoto"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:adjustViewBounds="true"
+            android:transitionName="@string/transition_name_photo_details"
+            app:layout_constraintBottom_toTopOf="@id/locationDetailsPhoto"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/discriptionsDetailsPhoto"
+            tools:srcCompat="@tools:sample/avatars" />
 
-    <ImageView
-        android:id="@+id/locationImageDetailsPhoto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_medium"
-        android:layout_marginBottom="@dimen/margin_small"
-        app:layout_constraintBottom_toTopOf="@+id/likeDetailsPhoto"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_location" />
+        <TextView
+            android:id="@+id/locationDetailsPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_small"
+            android:text="Monreal, Canada"
+            android:textColor="?attr/colorOnPrimary"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/locationImageDetailsPhoto"
+            app:layout_constraintStart_toEndOf="@id/locationImageDetailsPhoto"
+            app:layout_constraintTop_toTopOf="@+id/locationImageDetailsPhoto" />
 
-    <TextView
-        android:id="@+id/countLikesDetailsPhoto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="?attr/colorOnPrimary"
-        android:textStyle="bold"
-        android:layout_marginStart="@dimen/margin_small"
-        app:layout_constraintBottom_toBottomOf="@+id/likeDetailsPhoto"
-        app:layout_constraintStart_toEndOf="@+id/likeDetailsPhoto"
-        app:layout_constraintTop_toTopOf="@+id/likeDetailsPhoto"
-        tools:text="45268" />
+        <ImageView
+            android:id="@+id/locationImageDetailsPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginBottom="@dimen/margin_small"
+            app:layout_constraintBottom_toTopOf="@+id/likeDetailsPhoto"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/ic_location" />
 
-    <ImageButton
-        android:id="@+id/likeDetailsPhoto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:layout_marginStart="@dimen/margin_medium"
-        android:layout_marginBottom="@dimen/margin_medium"
-        app:srcCompat="@drawable/ic_like"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        <TextView
+            android:id="@+id/countLikesDetailsPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_small"
+            android:textColor="?attr/colorOnPrimary"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/likeDetailsPhoto"
+            app:layout_constraintStart_toEndOf="@+id/likeDetailsPhoto"
+            app:layout_constraintTop_toTopOf="@+id/likeDetailsPhoto"
+            tools:text="45268" />
 
-    <TextView
-        android:id="@+id/countDownloadDetailsPhoto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_small"
-        tools:text="12456"
-        android:textStyle="bold"
-        android:textColor="?attr/colorOnPrimary"
-        app:layout_constraintBottom_toBottomOf="@+id/downloadDetailsPhoto"
-        app:layout_constraintEnd_toStartOf="@+id/downloadDetailsPhoto"
-        app:layout_constraintTop_toTopOf="@+id/downloadDetailsPhoto" />
+        <ImageButton
+            android:id="@+id/likeDetailsPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/ic_like" />
 
-    <ImageButton
-        android:id="@+id/downloadDetailsPhoto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:layout_marginBottom="@dimen/margin_medium"
-        android:layout_marginEnd="@dimen/margin_medium"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_download" />
+        <TextView
+            android:id="@+id/countDownloadDetailsPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:textColor="?attr/colorOnPrimary"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/downloadDetailsPhoto"
+            app:layout_constraintEnd_toStartOf="@+id/downloadDetailsPhoto"
+            app:layout_constraintTop_toTopOf="@+id/downloadDetailsPhoto"
+            tools:text="12456" />
+
+        <ImageButton
+            android:id="@+id/downloadDetailsPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_download" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

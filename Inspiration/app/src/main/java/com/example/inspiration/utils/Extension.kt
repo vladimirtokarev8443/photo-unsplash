@@ -1,6 +1,9 @@
 package com.example.inspiration.utils
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,17 +15,20 @@ import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.example.inspiration.R
+import com.example.inspiration.models.BlurHashParam
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import xyz.belvi.blurhash.BlurHash
-import xyz.belvi.blurhash.blurPlaceHolder
 
 inline fun <T : ViewBinding> ViewGroup.viewBinding(
-    crossinline bindingInflater: (LayoutInflater, ViewGroup, Boolean) -> T): T{
+    crossinline bindingInflater: (LayoutInflater, ViewGroup, Boolean) -> T
+): T {
 
     return bindingInflater.invoke(LayoutInflater.from(context), this, false)
 }
@@ -34,33 +40,35 @@ fun Int.fromDpToPixels(context: Context): Int {
 }
 
 
-fun ImageView.setImageGlide(url: String){
+fun ImageView.setImageGlide(url: String, blur: BlurHashParam) {
     Glide.with(this)
         .load(url)
+        .placeholder(
+            BitmapDrawable(
+                resources,
+                BlurHashDecoder.decode(
+                    blur.blurHash,
+                    blur.width,
+                    blur.height
+                )
+            )
+        )
         .into(this)
 }
 
-fun ImageView.setImageGlideCircle(url: String){
+fun ImageView.setImageGlideCircle(url: String) {
     Glide.with(this)
         .load(url)
         .circleCrop()
         .into(this)
 }
 
-fun ImageView.setImageClideBlurHash(url: String, blurHash: BlurHash, blurString: String){
-    Glide.with(this)
-        .load(url)
-        .blurPlaceHolder(blurString, this, blurHash){ requestBuilder ->
-            requestBuilder.into(this)
-        }
-}
-
-fun ImageButton.setImageLike(isLike: Boolean){
+fun ImageButton.setImageLike(isLike: Boolean) {
     setImageResource(if (isLike) R.drawable.ic_like_selected else R.drawable.ic_like)
 }
 
 //устанавливает иконку но больше не нужен
-fun View.setIconSearchView(){
+fun View.setIconSearchView() {
     findViewById<SearchView>(R.id.actionSearch)
         .findViewById<ImageView>(R.id.search_button)
         .setImageResource(R.drawable.ic_search)
@@ -68,7 +76,7 @@ fun View.setIconSearchView(){
 
 fun SearchView.changeText(): Flow<String> {
     return callbackFlow<String> {
-        val textListener = object : SearchView.OnQueryTextListener{
+        val textListener = object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
 
                 query?.let(::trySendBlocking)
@@ -88,7 +96,7 @@ fun SearchView.changeText(): Flow<String> {
     }
 }
 
-fun MenuItem.expandedSearch(isExpand: () -> Unit, isCollapse: () -> Unit){
+fun MenuItem.expandedSearch(isExpand: () -> Unit, isCollapse: () -> Unit) {
     setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
         override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
             isExpand()

@@ -1,8 +1,10 @@
 package com.example.inspiration.presentation.tabs.photo
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagingData
@@ -31,22 +33,31 @@ class PhotoListFragment: BaseFragment<FragmentPhotoListBinding>(FragmentPhotoLis
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initPhotoList()
-
-        observeViewModel()
+        getResultToFragment()
 
         searchExpandedListener()
 
         filterPhoto()
 
-        getResultToFragment()
+        postponeEnterTransition()
+        binding.photoItemList.doOnPreDraw { startPostponedEnterTransition() }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        initPhotoList()
+
+        observeViewModel()
+
     }
 
     private fun initPhotoList(){
-        photoAdapter = PhotoAdapter { photoId, isClick ->
+        photoAdapter = PhotoAdapter { photoId, cardView, isClick ->
             isClick?.let {
                 viewModel.updateLike(it, photoId)
-            } ?: navigateToDetailsPhoto(photoId)
+            } ?: navigateToDetailsPhoto(photoId, cardView)
 
         }
         with(binding.photoItemList){
@@ -122,6 +133,8 @@ class PhotoListFragment: BaseFragment<FragmentPhotoListBinding>(FragmentPhotoLis
             val isLike = data.getBoolean(LIKE_KEY)
             val photoId = data.getString(PHOTO_ID_KEY)
             photoId?.let{ viewModel.setLocalChange(it, isLike) }
+
+            Log.d("qqq", "yes")
         }
     }
 

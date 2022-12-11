@@ -10,6 +10,8 @@ data class DetailsPhoto(
     val imageUrl: ImageUrl,
     @Json(name = "blur_hash")
     val blurHash: String,
+    val width: Int,
+    val height: Int,
     @Json(name = "color")
     val color: String,
     @Json(name = "user")

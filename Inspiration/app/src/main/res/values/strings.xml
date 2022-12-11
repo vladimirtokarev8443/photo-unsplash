@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">Inspiration</string>
 
+    <string name="transition_name_photo">photo%1$s</string>
+    <string name="transition_name_avatar">avatar%1$s</string>
+    <string name="transition_name_photo_details">photo</string>
+    <string name="transition_name_avatar_details">avatar</string>
+
+    <string name="transition_name">item%1$s</string>
+    <string name="transition_name_details">item</string>
+
     <string name="toolbar_title_photo">Фотографии</string>
     <string name="toolbar_title_collections">Коллекции</string>
     <string name="toolbar_title_profile">Профиль</string>

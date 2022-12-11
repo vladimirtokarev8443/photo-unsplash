@@ -9,9 +9,11 @@ data class Photo(
     @Json(name = "urls")
     val imageUrl: ImageUrl,
     @Json(name = "blur_hash")
-    val blurHash: String,
+    val blurHash: String?,
     @Json(name = "user")
     val author: Author,
     @Json(name = "liked_by_user")
-    val isLike: Boolean
+    val isLike: Boolean,
+    val width: Int,
+    val height: Int
 )

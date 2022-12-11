@@ -1,18 +1,18 @@
 package com.example.inspiration.adapters
 
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.models.Photo
 import com.example.inspiration.R
 import com.example.inspiration.databinding.ItemPhotoBinding
+import com.example.inspiration.models.BlurHashParam
 import com.example.inspiration.utils.*
-import xyz.belvi.blurhash.BlurHash
+import com.google.android.material.card.MaterialCardView
 
 class PhotoAdapter(
-    private val onItemClicked: (String, Boolean?) -> Unit
+    private val onItemClicked: (String, MaterialCardView?, Boolean?) -> Unit
 ) : PagingDataAdapter<Photo, PhotoAdapter.PhotoHolder>(PhotoDiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoHolder {
@@ -36,27 +36,27 @@ class PhotoAdapter(
 
     class PhotoHolder(
         private val binding: ItemPhotoBinding,
-        private val onItemClicked: (String, Boolean?) -> Unit,
+        private val onItemClicked: (String, MaterialCardView?, Boolean?) -> Unit,
     ): RecyclerView.ViewHolder(binding.root){
 
         fun bind(item: Photo) {
-        //val blurHash: BlurHash = BlurHash(itemView.context)
         var isLike = item.isLike
-
-            binding.photoItemPhoto.setImageClideBlurHash(item.imageUrl.url, BlurHash(itemView.context), item.blurHash)
-            //binding.photoItemPhoto.setImageGlide(item.imageUrl.url)
+            binding.photoItemPhoto.setImageGlide(item.imageUrl.url, BlurHashParam(item.blurHash, item.width, item.height))
             binding.avatarItemPhoto.setImageGlideCircle(item.author.avatarUrl.smallUrl)
             binding.nameAuthorItemPhoto.text = item.author.name
             binding.favoritesItemPhoto.setImageLike(isLike)
-            //binding.favoritesItemPhoto.setImageResource(if (isLike) R.drawable.ic_like_selected else R.drawable.ic_like)
 
-            binding.root.setOnClickListener{ onItemClicked(item.id, null) }
+            //binding.avatarItemPhoto.transitionName = itemView.resources.getString(R.string.image_transition_name_avatar, item.id)
+            //binding.photoItemPhoto.transitionName = itemView.resources.getString(R.string.image_transition_name, item.id)
+            binding.containerItemPhoto.transitionName = itemView.resources.getString(R.string.transition_name, item.id)
+            binding.root.setOnClickListener{
+
+                onItemClicked(item.id, binding.containerItemPhoto, null) }
 
             binding.favoritesItemPhoto.setOnClickListener {
                 isLike = isLike.not()
                 binding.favoritesItemPhoto.setImageLike(isLike)
-                //binding.favoritesItemPhoto.setImageResource(if (isLike) R.drawable.ic_like_selected else R.drawable.ic_like)
-                onItemClicked(item.id, isLike)
+                onItemClicked(item.id, null, isLike)
             }
         }
     }
